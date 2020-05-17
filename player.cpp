@@ -1,38 +1,24 @@
-#include <unordered_set>
 #include <cmath>
 #include <fstream>
 
-#include "area.hpp"
 #include "player.hpp"
 #include "creature.hpp"
-#include "entity_manager.hpp"
-#include "weapon.hpp"
-#include "armor.hpp"
+#include "item.h"
 
 using namespace std;
+/*
+Player::Player(string id,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level);
 
-Player::Player(string id,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level):
-Creature("player",name,hp,strength,defense,agility,xp)
-{
-	this-> level=level;
-	this->equippedArmor = nullptr;
-	this->equippedWeapon = nullptr;
-}
-
-/* nie działa :/
-Player::Player() : Player::Player("",0,0,0,0,0,1)
-{}
-*/
 Player::Player()
 {
 	ifstream file("player.txt");
 	while (file)
 	{
-		file>>/*this->id>>*/this->hp>>this->strength>>this->defense>>this->agility>>this->xp>>this->level;
+		file>>this->id>>this->hp>>this->strength>>this->defense>>this->agility>>this->xp>>this->level;
 	}
 	file.close();
 }
-
+*/
 //Oblicza potrzebne xp do lvlup-a --- Do dopracowania
 unsigned int Player::xpToLevel(unsigned int level)
 {
@@ -88,20 +74,9 @@ bool Player::levelUp()
 			cout<<"MissClick\n";
 			continue;
 		}
-		
+
 	}
 	skill_points--;
 	}
 	return true;
-}
-
-void Player::equipWeapon(Weapon* weapon)
-{
-	this->equippedWeapon = weapon;
-	return;
-}
-void Player::equipArmor(Armor* armor)
-{
-	this->equippedArmor = armor;
-	return;
 }

@@ -2,9 +2,6 @@
 #include <cstdlib>
 
 #include "creature.hpp"
-#include "entity.hpp"
-#include "inventory.hpp"
-#include "entity_manager.hpp"
 
 using namespace std;
 
@@ -27,13 +24,13 @@ int Creature::attack(Creature* target)
 {
 	// Damage done
 	int damage = 0;
-	
+
 	if(double(rand()) / RAND_MAX  > target->agility/*dodać zależność*/)
 	{
 		// Atak
-		int attack = this->strength + (this->equippedWeapon == nullptr ? 0 : this->equippedWeapon->damage);
+		int attack = this->strength;
 		// Obrona
-		int defense = target->defense + (target->equippedArmor == nullptr ? 0 : target->equippedArmor->defense);
+		int defense = target->defense;
 		// Unik - nieukończone
 		int dodge = target->agility;
 
