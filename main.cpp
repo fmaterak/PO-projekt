@@ -9,13 +9,9 @@
 #include <list>
 #include <map>
 
-#include "item.hpp"
-#include "weapon.hpp"
-#include "armor.hpp"
-#include "inventory.hpp"
+#include "item.h"
 #include "creature.hpp"
 #include "player.hpp"
-#include "battle.hpp"
 
 // menu startowe
 Player startGame();
@@ -27,52 +23,37 @@ int main()
 {
 	std::srand(std::time(nullptr));
 
+    int rounds=0;
 	Player player = startGame();
+	player.hp=20;
 
 	// gra trwa do zerwania petli
 	while(1)
 	{
-		// autozapis
-		player.save(&entityManager);
-
-		// sprawdzenie czy sa przeciwnicy
-		if(areaPtr->creatures.size() > 0)
-		{
-			// wektor wskaznikow na przeciwnikow
-			std::vector<Creature*> combatants;
-			std::cout << "Zostales zaatakowany przez: ";
-			for(int i = 0; i < areaPtr->creatures.size(); ++i)
-			{
-				Creature* c = &(areaPtr->creatures[i]);
-				combatants.push_back(c);
-				std::cout << c->name << (i == areaPtr->creatures.size()-1 ? "!\n" : ", ");
-			}
-			// dodanie gracza
-			combatants.push_back(&player);
-			// rozpoczecie walki
-			Battle battle(combatants);
-			battle.run();
+            if(rounds==10){
+                std::cout<<"Gratulacje! Wygrales";
+            }
 
 			// jesli gracz przezyl otrzymuje doswiadczenie
 			if(player.hp > 0)
 			{
+			    rounds++;
+			    dialogueMenu(player);
+                system("cls");
 				unsigned int xp = 0;
-				for(auto creature : areaPtr->creatures) xp += creature.xp;
-				std::cout << "You gained " << xp << " experience!\n";
+				std::cout << "Zdobyles " << xp << " doswiadczenia!\n";
 				player.xp += xp;
-				// usuniecie przeciwnikow
-				areaPtr->creatures.clear();
+				player.hp--;
 				// restart petli
 				continue;
 			}
 			// jesli gracz ma 0 hp gra sie konczy
 			else
 			{
-				std::cout << "\t----YOU DIED----\n    Game Over\n";
+				std::cout << "\t----UMARLES----\n    Koniec gry\n";
 				return 0;
 			}
 		}
-	}
 
 	return 0;
 }
@@ -80,73 +61,70 @@ int main()
 // tworzenie postaci lub wczytanie
 Player startGame()
 {
+    std::cout <<"Witaj w grze! \nWalczysz na arenie, nie masz mozliwosci leczenia, czeka Cie 10 walk jezeli przezyjesz zwyciezysz! \n";
 	std::cout << "Jakie imie chcesz wybrac?" << std::endl;
 	std::string name;
 	std::cin >> name;
-
+    int result;
+    std::cout << "Jaka klase postaci chcesz wybrac? \n 1-wojownik \n 2-bandyta" << std::endl;
+    std::cin >> result;
 	std::ifstream f((name).c_str());
 	if(f.good())
 	{
 		f.close();
-		Player player = Player(saveData, areaData, &entityManager);
 
 		// Return the player
-		return player;
 	}
+	/*
 	else
 	{
 		f.close();
-		int result = Dialogue(
-			"Choose your class",
-			{"Wojownik", "Bandyta"}).activate();
+
 
 		switch(result)
 		{
-			// Wojownik skupia sie na sile
+			 //Wojownik skupia sie na sile
 			case 1:
-				return Player(name, 15, 5, 4, 1.0/64.0, 0, 1, "Wojownik");
+				return Player(name, 15, 5, 4, 1, 0, 1);
 
-			// Bandyta skupia sie na zrecznosci
+			//Bandyta skupia sie na zrecznosci
 			case 2:
-				return Player(name, 15, 4, 5, 1.0/64.0, 0, 1, "Bandyta");
+				return Player(name, 15, 4, 5, 1, 0, 1);
 
 			// case dla bezpieczenstwa
 			default:
-				return Player(name, 15, 4, 4, 1.0/64.0, 0, 1, "Normal");
+				return Player(name, 15, 4, 4, 1, 0, 1);
 		}
 	}
+	*/
 }
 
 void dialogueMenu(Player& player)
 {
 	// menu
 	int result;
-	std::cout << "Wybierz opcje (1 - przedmioty 2 - statystyki przedmiotow 3 - statystyki postaci)
+	std::cout << "Wybierz opcje (1 - przedmioty 2 - statystyki przedmiotow 3 - statystyki postaci 4 - nastepna walka)";
+    do{
+	cin>>result;
 
 	switch(result)
 	{
 		// Wyswietlenie przedmiotow
 		case 1:
 			std::cout << "Przedmioty\n=====\n";
-			player.inventory.print();
+
 			std::cout << "----------------\n";
 			break;
 		// jesli nie ma przedmiotow prosi o zalozenie
 		case 2:
 		{
-			std::cout << "Equipment\n=========\n";
-			std::cout << "Armor: "
-				<< (player.equippedArmor != nullptr ?
-					player.equippedArmor->name : "Nothing")
+			std::cout << "Ekwipunek\n=========\n";
+			std::cout << "Zbroja: "
 				<< std::endl;
-			std::cout << "Weapon: "
-				<< (player.equippedWeapon != nullptr ?
-					player.equippedWeapon->name : "Nothing")
+			std::cout << "Bron: "
 				<< std::endl;
 
-			int result2 = Dialogue(
-				"",
-				{"Equip Armor", "Equip Weapon", "Close"}).activate();
+			int result2;
 
 			// zbroja
 			if(result2 == 1)
@@ -154,7 +132,7 @@ void dialogueMenu(Player& player)
 				int userInput = 0;
 
 				// sprawdzenie czy gracz ma zbroje
-				int numItems = player.inventory.print<Armor>(true);
+				int numItems;
 				if(numItems == 0) break;
 
 				while(!userInput)
@@ -163,28 +141,17 @@ void dialogueMenu(Player& player)
 					std::cout << "Ktory przedmiot zalozyc?" << std::endl;
 					std::cin >> userInput;
 
-					if(userInput >= 1 && userInput <= numItems)
-					{
-						player.equipArmor(player.inventory.get<Armor>(userInput-1));
-					}
 				}
 			}
 			// bron analogicznie do zbroji
 			else if(result2 == 2)
 			{
 				int userInput = 0;
-				int numItems = player.inventory.print<Weapon>(true);
-
-				if(numItems == 0) break;
 
 				while(!userInput)
 				{
 					std::cout << "Wybierz przedmiot?" << std::endl;
 					std::cin >> userInput;
-					if(userInput >= 1 && userInput <= numItems)
-					{
-						player.equipWeapon(player.inventory.get<Weapon>(userInput-1));
-					}
 				}
 			}
 			std::cout << "----------------\n";
@@ -194,7 +161,6 @@ void dialogueMenu(Player& player)
 		case 3:
 			std::cout << "Bohater\n=========\n";
 			std::cout << player.name;
-			if(player.className != "") std::cout << " the " << player.className;
 			std::cout << std::endl;
 
 			std::cout << "Zdrowie:   " << player.hp << " / " << player.maxHp << std::endl;
@@ -206,7 +172,9 @@ void dialogueMenu(Player& player)
 			break;
 		default:
 			break;
+
 	}
+    }while(result !=4);
 
 	return;
 }
