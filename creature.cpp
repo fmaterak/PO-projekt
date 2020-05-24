@@ -2,9 +2,6 @@
 #include <cstdlib>
 
 #include "creature.hpp"
-#include "entity.hpp"
-#include "inventory.hpp"
-#include "entity_manager.hpp"
 
 using namespace std;
 
@@ -17,39 +14,30 @@ Creature::Creature(string id,int hp, int strength, int defense, int agility, uns
 	this->agility = agility;
 	this->xp = xp;
 }
-/* ~Hmmm~
-Creature::Creature(0, 0, 0, 0, 0)
-{
-	this->load;
-}
-*/
+
 int Creature::attack(Creature* target)
 {
 	// Damage done
 	int damage = 0;
 	
-	if(double(rand()) / RAND_MAX  > target->agility/*dodać zależność*/)
+	if(double(rand()) > target->agility) // Dopasować rand
 	{
 		// Atak
-		int attack = this->strength + (this->equippedWeapon == nullptr ? 0 : this->equippedWeapon->damage);
+		int attack = this->strength;
 		// Obrona
-		int defense = target->defense + (target->equippedArmor == nullptr ? 0 : target->equippedArmor->defense);
-		// Unik - nieukończone
-		int dodge = target->agility;
-
+		int defense = target->defense;
 		// Przykładowe - do zrobienia
 		// critical hit
 		if(rand() % 32 == 0)
 		{
-			// Ignore defense and do damage in range [attack/2, attack]
-			damage = attack / 2 + rand() % (attack / 2 + 1);
+			
+			damage = attack * 1.5;
 		}
 		else
 		{
 			// Podstawa ataku
-			int baseDamage = attack - defense / 2;
-			// Damage in range [baseDamage/4, baseDamage/2]
-			damage = baseDamage / 4 + rand() % (baseDamage / 4 + 1);
+			int baseDamage = attack - defense;
+			damage = atack - defense;
 			// If the damage is zero then have a 50% chance to do 1 damage
 			if(damage < 1)
 			{
@@ -59,18 +47,74 @@ int Creature::attack(Creature* target)
 		// Damage the target
 		target->hp -= damage;
 	}
-
 	return damage;
 }
-
+int Creature::attack_fast(Creature* target)
+{
+	int damage=0;
+	//większa szansa na unik
+	this->agility*=1.5;
+	if (double(rand()) > target->agility)
+	{
+		int attack=(this->strength)/2;
+		int defense=target->defense;
+		//krytyczny ? wstawić : lub nie;
+		damage=attack-defense;
+		
+		if(damage < 1)
+		{
+			damage = rand() % 2;
+		}
+		
+		target->hp -= damage;
+	}
+	return damage;
+}
+int Creature::attack_strong(Creature* target)
+{
+	int damage=0;
+	//mniejsza szansa na unik
+	this->agility*=0.5;
+	if (double(rand())  > target->agility)
+	{
+		//większy atak
+		int attack= (this->strength)*2;
+		//ignorowanie części obrony przeciwnika?
+		int defense=target->defense * 0.8;
+		//większa szansa na krytyka?
+		//tutaj wpisać
+		
+		damage=attack-defense;
+		if(damage < 1)
+		{
+			damage = rand() % 2;
+		}
+		target->hp-=damage;
+	}
+	retrurn damage;
+}
+int Creature::defend()
+{
+	int defend=0;
+	this->defense*=2;
+	defend= this->defense;
+	return defend;
+}
+int Creature::focus()
+{
+	int focus=0;
+	this->agility*=2;
+	focus=this->agility;
+	return focus;
+}
 // Losuj statystyki przeciwnika
 void Creature::enemy(int room)
 {
 	int a = room; // <- przelicznik trudności/pomieszczenie
 	int b=3; // <- zakres losowania (np. str 0-3)
-	//this->id="enemy";
 
 	// Do dopracowania
+	this->id="enemy";
 	this->hp = rand() % b + (5*a+1);
 	this->maxHp = this->hp;
 	this->strength = rand() % b + (a+1);
