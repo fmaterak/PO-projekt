@@ -4,10 +4,9 @@
 #include "player.hpp"
 #include "creature.hpp"
 #include "item.h"
-
 using namespace std;
-/*
-Player::Player(string id,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level);
+
+Player::Player(string id ,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level);
 
 Player::Player()
 {
@@ -18,7 +17,7 @@ Player::Player()
 	}
 	file.close();
 }
-*/
+
 //Oblicza potrzebne xp do lvlup-a --- Do dopracowania
 unsigned int Player::xpToLevel(unsigned int level)
 {
@@ -74,7 +73,7 @@ bool Player::levelUp()
 			cout<<"MissClick\n";
 			continue;
 		}
-
+		
 	}
 	skill_points--;
 	}
