@@ -6,7 +6,6 @@
 
 #include "battle.hpp"
 #include "creature.hpp"
-#include "dialogue.hpp"
 
 BattleEvent::BattleEvent(Creature* source, Creature* target, BattleEventType type)
 {
@@ -19,16 +18,16 @@ int BattleEvent::run()
 {
 	switch(type)
 	{
-		case BattleEventType::ATTACK_NORMAL:
+		case BattleEventType::ATTACK:
 			return source->attack(target);
 		case BattleEventType::ATTACK_FAST:
 			return source->attack_fast(target);
 		case BattleEventType::ATTACK_STRONG:
 			return source->attack(target);
 		case BattleEventType::DEFEND:
-			return source->defend;
+			return source->defend();
 		case BattleEventType::FOCUS:
-			return source->focus;
+			return source->focus();
 		case BattleEventType::DEFEND_ENEMY:
 			return source->defend_enemy(target);
 		case BattleEventType::FOCUS_ENEMY:
@@ -59,21 +58,6 @@ void Battle::kill(Creature* creature)
 
 	return;
 }
-
-Battle::Battle(std::vector<Creature*>& combatants)
-{
-	this->combatants = combatants;
-
-	// Construct the menu
-	this->battleOptions = Dialogue("What will you do?",
-	{
-		"Attack",
-		"Fast attack",
-		"Strong attack",
-		"Defend",
-		"Focus"
-	});
-
 	//przydzielanie unikalnego id dla kilku przeciwników?
 
 void Battle::run()
@@ -142,14 +126,14 @@ void Battle::nextTurn()
 			}
 			*/
 			
-			// Ask the player for their action (attack or defend)
-			
-			int choice = this->battleOptions.activate();
-
+			// zapytaj o akcję
+			std::cout<<"Co chcesz zrobic?\n1. Atak\n2. Szybki atak\n3. Silny atak\n4. Obrona\n5. Skupienie (na uniku)\n";
+			int choice;
+			std::cin>>choice;
 			//takie małe obejście dla obrony i uniku przeciwnika
-			if (enemy_choice == 1)
+			if (enemy_action == 1)
 			{
-				int position = targetSelection.activate();
+				int position = 1;
 					for(int i = 0; i < position; ++i)
 					{
 						if(this->combatants[i]->id == "player") ++position;
@@ -158,9 +142,9 @@ void Battle::nextTurn()
 					// Add the attack command to the event queue
 					events.push(BattleEvent(com, target, BattleEventType::DEFEND_ENEMY));
 			}
-			if (enemy_choice == 2)
+			if (enemy_action == 2)
 			{
-				int position = targetSelection.activate();
+				int position = 1;
 					for(int i = 0; i < position; ++i)
 					{
 						if(this->combatants[i]->id == "player") ++position;
@@ -195,7 +179,7 @@ void Battle::nextTurn()
 				}
 				case 2:
 				{
-					int position = targetSelection.activate();
+					int position = 1;
 					for(int i = 0; i < position; ++i)
 					{
 						if(this->combatants[i]->id == "player") ++position;
@@ -207,7 +191,7 @@ void Battle::nextTurn()
 				}
 				case 3:
 				{
-					int position = targetSelection.activate();
+					int position = 1;
 					for(int i = 0; i < position; ++i)
 					{
 						if(this->combatants[i]->id == "player") ++position;
@@ -233,7 +217,7 @@ void Battle::nextTurn()
 		}
 		else
 		{
-			if (enemy_choice != 1 || enemy_choice != 2)
+			if (enemy_action != 1 || enemy_action != 2)
 			{
 				// Simple enemy AI where enemy constantly attacks player
 				Creature* player = *std::find_if(this->combatants.begin(), this->combatants.end(),
