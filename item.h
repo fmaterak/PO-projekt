@@ -21,6 +21,7 @@ int gold;
 string nameT;
 int agilityT, defenceT, damageT;
 float priceT;
+int tmp1;
 
 void menu_ekwipunek();
 
