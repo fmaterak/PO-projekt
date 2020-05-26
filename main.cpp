@@ -118,12 +118,10 @@ void dialogueMenu(Player& player)
 	{
 		// Wyswietlenie przedmiotow
 		case 1:
-			std::cout << "Przedmioty\n=====\n";
-
-			std::cout << "----------------\n";
+			void menu_ekwipunek();
 			break;
 		// jesli nie ma przedmiotow prosi o zalozenie
-		case 2:
+		/*case 2:
 		{
 			std::cout << "Ekwipunek\n=========\n";
 			std::cout << "Zbroja: "
@@ -163,7 +161,7 @@ void dialogueMenu(Player& player)
 			}
 			std::cout << "----------------\n";
 			break;
-		}
+		}*/
 		// Wyswietlenie statystyk
 		case 3:
 			std::cout << "Bohater\n=========\n";
