@@ -1,0 +1,12 @@
+9
+Boiled_leather 20 2 0 0
+Basic_armor 35 7 0 0
+Iron_armor 50 14 0 -10
+Knife 15 0 3 2
+Sabre 28 0 6 3
+Short_sword 43 0 13 5
+Rusty_spear 18 0 5 -1
+Lid 15 2 0 0
+Demaged_shield 22 4 0 -4
+
+Name price defence damage agility
