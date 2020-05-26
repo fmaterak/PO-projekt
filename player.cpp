@@ -34,10 +34,10 @@ bool Player::levelUp()
 	skill_points=5; //Ilość do rozdania
 	this->maxHp+=100; // <- Tutaj hp
 	this->hp=this->maxHp;
-	cout<<"Health grew to " << this->maxHp << "!\n";
-	cout<<"Skill points: 5\n";
-	cout<<"Choose upgrade: \n";
-	cout<<"1.Strenght [+1]\n2. Defense [+1]\n3. Agility [+1]\n";
+	cout<<"Zdrowie wzroslo do " << this->maxHp << "!\n";
+	cout<<"Punkty statystyk do rozdania: 5\n";
+	cout<<"Co ulepszyc? \n";
+	cout<<"1.Sila [+1]\n2. Obrona [+1]\n3. Zrecznosc [+1]\n";
 
 	//Wyeliminować echo przy stdin
 	while(skill_points)
@@ -47,21 +47,21 @@ bool Player::levelUp()
 		{
 		case 1:
 		{
-			cout<<"Strength "<<this->strength<<" -> ";
+			cout<<"Sila "<<this->strength<<" -> ";
 			this->strength+=1;
 			cout<<this->strength<<endl;
 			break;
 		}
 		case 2:
 		{
-			cout<<"Defense "<<this->defense<<" -> ";
+			cout<<"Obrona "<<this->defense<<" -> ";
 			this->defense+=1;
 			cout<<this->defense<<endl;
 			break;
 		}
 		case 3:
 		{
-			cout<<"Agility "<<this->agility<<" -> ";
+			cout<<"Zrecznosc "<<this->agility<<" -> ";
 			this->agility+=1;
 			cout<<this->agility<<endl;
 			break;
