@@ -6,14 +6,14 @@
 #include "item.h"
 using namespace std;
 
-Player::Player(string id ,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level);
+Player::Player(string id ,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level, int gold);
 
 Player::Player()
 {
 	ifstream file("player.txt");
 	while (file)
 	{
-		file>>this->id>>this->hp>>this->strength>>this->defense>>this->agility>>this->xp>>this->level;
+		file>>this->id>>this->hp>>this->strength>>this->defense>>this->agility>>this->xp>>this->level>>this->gold;
 	}
 	file.close();
 }
