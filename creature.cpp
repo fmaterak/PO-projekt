@@ -14,26 +14,18 @@ Creature::Creature(string id,int hp, int strength, int defense, int agility, uns
 	this->agility = agility;
 	this->xp = xp;
 }
-/* ~Hmmm~
-Creature::Creature(0, 0, 0, 0, 0)
-{
-	this->load;
-}
-*/
+
 int Creature::attack(Creature* target)
 {
 	// Damage done
 	int damage = 0;
-
-	if(double(rand()) / RAND_MAX  > target->agility/*dodać zależność*/)
+	
+	if(double(rand()) > target->agility) // Dopasować rand
 	{
 		// Atak
 		int attack = this->strength;
 		// Obrona
 		int defense = target->defense;
-		// Unik - nieukończone
-		int dodge = target->agility;
-
 		// Przykładowe - do zrobienia
 		// critical hit
 		if(rand() % 32 == 0)
@@ -56,8 +48,71 @@ int Creature::attack(Creature* target)
 		// Damage the target
 		target->hp -= damage;
 	}
-
 	return damage;
+}
+int Creature::attack_fast(Creature* target)
+{
+	int damage=0;
+	//większa szansa na unik
+	this->agility*=1.5;
+	if (double(rand()) > target->agility)
+	{
+		int attack=(this->strength)/2;
+		int defense=target->defense;
+		//krytyczny ? wstawić : lub nie;
+		damage=attack-defense;
+		target->hp -= damage;
+	}
+	return damage;
+}
+int Creature::attack_strong(Creature* target)
+{
+	int damage=0;
+	//mniejsza szansa na unik
+	this->agility*=0.5;
+	if (double(rand())  > target->agility)
+	{
+		//większy atak
+		int attack= (this->strength)*2;
+		//ignorowanie części obrony przeciwnika?
+		int defense=target->defense * 0.8;
+		//większa szansa na krytyka?
+		//tutaj wpisać
+
+		damage=attack-defense;
+		target->hp-=damage;
+	}
+	retrurn damage;
+}
+int Creature::defend()
+{
+	int defend=0;
+	this->defense*=2;
+	defend= this->defense;
+	return defend;
+}
+int Creature::focus()
+{
+	int focus=0;
+	this->agility*=2;
+	focus=this->agility;
+	return focus;
+}
+
+//obrona i unik przeciwnika
+int Creature::defend_enemy(Creature* target)
+{
+	int enemy_def=0;
+	target->defense*=2;
+	enemy_def=target->defense;
+	return enemy_def;
+}
+int Creature::focus_enemy(Creature* target)
+{
+	int enemy_ag=0;
+	target->agility*=2;
+	enemy_ag=target->agility;
+	return enemy_ag;
 }
 
 // Losuj statystyki przeciwnika
@@ -68,6 +123,7 @@ void Creature::enemy(int room)
 	//this->id="enemy";
 
 	// Do dopracowania
+	this->id="enemy";
 	this->hp = rand() % b + (5*a+1);
 	this->maxHp = this->hp;
 	this->strength = rand() % b + (a+1);
