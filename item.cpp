@@ -1,81 +1,280 @@
 #include "item.h"
 using namespace std;
 
-void przypisanie()
+
+// MENU OD PRZEDMIOTOW WSZYSTKICH
+void menu_ekwipunek()
 {
-	//Armor
+	cout << "[1] - Przedmioty zalozone." << endl;
+	cout << "[2] - Przedmioty w plecaku." << endl;
+	cout << "[3] - Sklep." << endl;
+	cout << "[4] - Chce zdjac przedmiot." << endl;
+	cout << "[5] - Chce zalozyc przedmiot." << endl;
+	cout << "Posiadasz: "<<gold<<"zlota" << endl;
+
+	int menu_nr=-1;
+	Item* katalog = new Item;
+	int l = -1;
+
+	switch (menu_nr)
 	{
-		Armor A1;
-		A1.id = 1;
-		A1.price = 20;
-		A1.agility = 0;
-		A1.name = "Boiled leather";
-		A1.defense = 2;
-	}
+	case 1:
 	{
-		Armor A2;
-		A2.id = 2;
-		A2.price = 35;
-		A2.agility = 0;
-		A2.name = "Basic Armor";
-		A2.defense = 7;
+		katalog = wczytaj_zalozone(&l);
+		wypis_wszystkich(l, katalog);
+		system("PAUSE");
+		system("cls");
+		break;
 	}
+	case 2:
 	{
-		Armor A3;
-		A3.id = 3;
-		A3.price = 50;
-		A3.agility = -10;
-		A3.name = "Iron Armor";
-		A3.defense = 14;
+		katalog = wczytaj_w_plecaku(&l);
+		wypis_wszystkich(l, katalog);
+		system("PAUSE");
+		system("cls");
+		break;
 	}
-	//Weapon
+	case 3:
 	{
-		Weapon W1;
-		W1.id = 11;
-		W1.price = 15;
-		W1.agility = 2;
-		W1.name = "Knife";
-		W1.damage = 3;
+		int tmp = -1;
+		cout << "[1] - Lista dostepnych przedmiotow." << endl;
+		cout << "[2] - Kup przedmiot." << endl;
+		cout << "Wypieram pozycje nr: ";
+		cin >> tmp;
+		switch (tmp)
+		{
+		case 1:
+		{
+			katalog = wczytaj_sklep(&l);
+			wypis_wszystkich(l, katalog);
+			system("PAUSE");
+			system("cls");
+			break;
+		}
+		case 2:
+		{
+			int tmp1;
+
+			cout << "Chce kupic przedmiot o nr: ";
+			cin >> tmp1;
+			katalog = wczytaj_sklep(&l);
+			if (tmp1 >= l)
+			{
+				cout << "Nie ma przedmiotu o takim numerze!" << endl;
+			}
+			else
+			{
+				nameT = katalog[tmp1].name;
+				priceT = katalog[tmp1].price;
+				defenceT = katalog[tmp1].defence;
+				damageT = katalog[tmp1].damage;
+				agilityT = katalog[tmp1].agility;
+
+				if (gold >= katalog[tmp1].price)
+				{
+					gold = gold - katalog[tmp1].price;
+					katalog = zmniejsz(&l, katalog);
+
+					katalog = wczytaj_w_plecaku(&l);
+					katalog = dodaj(&l, katalog);
+				}
+				else
+				{
+					cout << "Nie masz wystarczajaco pieniedzy!" << endl;
+				}
+			}
+
+
+			system("PAUSE");
+			system("cls");
+			break;
+		}
+		}
 	}
+	case 4:
 	{
-		Weapon W2;
-		W2.id = 12;
-		W2.price = 28;
-		W2.agility = 3;
-		W2.name = "Sabre";
-		W2.damage = 6;
+		int tmp2;
+
+		cout << "Chce kupic przedmiot o nr: ";
+		cin >> tmp2;
+		katalog = wczytaj_zalozone(&l);
+		if (tmp1 >= l)
+		{
+			cout << "Nie ma przedmiotu o takim numerze!" << endl;
+		}
+		else
+		{
+			nameT = katalog[tmp2].name;
+			priceT = katalog[tmp2].price;
+			defenceT = katalog[tmp2].defence;
+			damageT = katalog[tmp2].damage;
+			agilityT = katalog[tmp2].agility;
+			
+			katalog = zmniejsz(&l, katalog);
+
+			katalog = wczytaj_w_plecaku(&l);
+			katalog = dodaj(&l, katalog);
+		}
 	}
+	case 5:
 	{
-		Weapon W3;
-		W3.id = 13;
-		W3.price = 43;
-		W3.agility = 5;
-		W3.name = "Short Sword";
-		W3.damage = 13;
+		int tmp3;
+
+		cout << "Chce kupic przedmiot o nr: ";
+		cin >> tmp3;
+		katalog = wczytaj_w_plecaku(&l);
+		if (tmp1 >= l)
+		{
+			cout << "Nie ma przedmiotu o takim numerze!" << endl;
+		}
+		else
+		{
+			nameT = katalog[tmp3].name;
+			priceT = katalog[tmp3].price;
+			defenceT = katalog[tmp3].defence;
+			damageT = katalog[tmp3].damage;
+			agilityT = katalog[tmp3].agility;
+
+			katalog = zmniejsz(&l, katalog);
+
+			katalog = wczytaj_zalozone(&l);
+			katalog = dodaj(&l, katalog);
+		}
 	}
+	}
+}
+
+void wypis_wszystkich(int i, Item kat[])
+{
+	for (int j = 0; i > j; j++)
 	{
-		Weapon W1l;
-		W1l.id = 111;
-		W1l.price = 18;
-		W1l.agility = -1;
-		W1l.name = "Rusty Spear";
-		W1l.damage = 5;
+		cout << "nr: " << j << endl;
+		cout << "Nazwa: " << kat[j].name << endl;
+		cout << "Cena: " << kat[j].price << endl;
+		cout << "Obrona: " << kat[j].defence << endl;
+		cout << "Atak: " << kat[j].damage << endl;
+		cout << "Zrecznosc: " << kat[j].agility << endl;
 	}
-	//Shield
+}
+Item* wczytaj_zalozone(int* i)
+{
+	fstream plik;
+	plik.open("przedmioty.txt", ios::in);
+	if (plik.good() == false)
 	{
-		Shield S1;
-		S1.id = 1111;
-		S1.price = 15;
-		S1.agility = 0;
-		S1.name = "Lid";
-		S1.defense = 2;
+		cout << "Blad otwarcia pliku." << endl;
+		exit(-1);
 	}
+	plik >> *i; //pobranie ilości zalozonych przedmiotow
+	Item* kat = new Item[*i];
+	for (int j = 0; j < *i; j++)
 	{
-		Shield S2;
-		S2.id = 1112;
-		S2.price = 22;
-		S2.agility = -4;
-		S2.name = "Demaged Shield";
-		S2.defense = 4;
+		plik >> kat[j].name;
+		plik >> kat[j].price;
+		plik >> kat[j].defence;
+		plik >> kat[j].damage;
+		plik >> kat[j].agility;
 	}
+	plik.close();
+	return kat;
+}
+Item* wczytaj_w_plecaku(int* i)
+{
+	fstream plik;
+	plik.open("zdjete.txt", ios::in);
+	if (plik.good() == false)
+	{
+		cout << "Blad otwarcia pliku." << endl;
+		exit(-1);
+	}
+	plik >> *i; //pobranie ilości posiadanych, ale nie zalozonych przedmiotow
+	Item* kat = new Item[*i];
+	for (int j = 0; j < *i; j++)
+	{
+		plik >> kat[j].name;
+		plik >> kat[j].price;
+		plik >> kat[j].defence;
+		plik >> kat[j].damage;
+		plik >> kat[j].agility;
+	}
+	plik.close();
+	return kat;
+}
+Item* wczytaj_sklep(int* i)
+{
+	fstream plik;
+	plik.open("sklep.txt", ios::in);
+	if (plik.good() == false)
+	{
+		cout << "Blad otwarcia pliku." << endl;
+		exit(-1);
+	}
+	plik >> *i; //pobranie ilości przedmiotow w sklepie
+	Item* kat = new Item[*i];
+	for (int j = 0; j < *i; j++)
+	{
+		plik >> kat[j].name;
+		plik >> kat[j].price;
+		plik >> kat[j].defence;
+		plik >> kat[j].damage;
+		plik >> kat[j].agility;
+	}
+	plik.close();
+	return kat;
+}
+Item* usun(int* i, Item kat[])
+{
+	Item* nowa = new Item[*i - 1];
+	for (int j = 0; j < *i - 1; j++)
+	{
+		if (tmp1 > j)
+		{
+			nowa[j].name = kat[j].name;
+			nowa[j].price = kat[j].price;
+			nowa[j].defence = kat[j].defence;
+			nowa[j].damage = kat[j].damage;
+			nowa[j].agility = kat[j].agility;
+		}
+		else
+		{
+			nowa[j].name = kat[j+1].name;
+			nowa[j].price = kat[j+1].price;
+			nowa[j].defence = kat[j+1].defence;
+			nowa[j].damage = kat[j+1].damage;
+			nowa[j].agility = kat[j+1].agility;
+		}
+	}
+	delete[]kat;
+	return nowa;
+}
+Item* zmniejsz(int* i, Item kat[])
+{
+	Item* nowa = usun(i, kat);
+	*i = *i - 1;
+	return nowa;
+}
+Item* powieksz(int i, Item kat[])
+{
+	Item* nowa = new Item[i + 1];
+	for (int j = 0; j < i; j++)
+	{
+		nowa[j].name = kat[j].name;
+		nowa[j].price = kat[j].price;
+		nowa[j].defence = kat[j].defence;
+		nowa[j].damage = kat[j].damage;
+		nowa[j].agility = kat[j].agility;
+	}
+	delete[]kat;
+	return nowa;
+}
+Item* dodaj(int* i, Item kat[])
+{
+	Item* nowa = powieksz(*i, kat);
+	nowa[*i].name = nameT;
+	nowa[*i].price = priceT;
+	nowa[*i].defence = defenceT;
+	nowa[*i].damage = damageT;
+	nowa[*i].agility = agilityT;
+	*i = *i + 1;
+	return nowa;
 }
