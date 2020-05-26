@@ -11,19 +11,20 @@
 
 #include "item.h"
 #include "creature.hpp"
+#include "entity.hpp"
 #include "player.hpp"
+#include "battle.hpp"
 
 // menu startowe
 Player startGame();
 
 // wyswietla przedmioty, statystyki
 void dialogueMenu(Player& player);
-
 int main()
 {
 	std::srand(std::time(nullptr));
 
-    int rounds=0;
+    unsigned int rounds=0;
 	Player player = startGame();
 	player.hp=20;
 
@@ -32,7 +33,13 @@ int main()
 	{
             if(rounds==10){
                 std::cout<<"Gratulacje! Wygrales";
+                return 0;
             }
+
+            std::vector<Creature*> combatants;
+            combatants.push_back(&player);
+			Battle battle(combatants);
+			battle.run();
 
 			// jesli gracz przezyl otrzymuje doswiadczenie
 			if(player.hp > 0)
@@ -160,7 +167,7 @@ void dialogueMenu(Player& player)
 		// Wyswietlenie statystyk
 		case 3:
 			std::cout << "Bohater\n=========\n";
-			std::cout << player.name;
+			std::cout << player.id;
 			std::cout << std::endl;
 
 			std::cout << "Zdrowie:   " << player.hp << " / " << player.maxHp << std::endl;
