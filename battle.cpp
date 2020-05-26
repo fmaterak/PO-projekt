@@ -6,7 +6,6 @@
 
 #include "battle.hpp"
 #include "creature.hpp"
-#include "dialogue.hpp"
 
 BattleEvent::BattleEvent(Creature* source, Creature* target, BattleEventType type)
 {
@@ -21,8 +20,18 @@ int BattleEvent::run()
 	{
 		case BattleEventType::ATTACK:
 			return source->attack(target);
+		case BattleEventType::ATTACK_FAST:
+			return source->attack_fast(target);
+		case BattleEventType::ATTACK_STRONG:
+			return source->attack(target);
 		case BattleEventType::DEFEND:
-			return 0;
+			return source->defend();
+		case BattleEventType::FOCUS:
+			return source->focus();
+		case BattleEventType::DEFEND_ENEMY:
+			return source->defend_enemy(target);
+		case BattleEventType::FOCUS_ENEMY:
+			return source->focus_enemy(target);
 		default:
 			return 0;
 	}
@@ -36,7 +45,7 @@ void Battle::kill(Creature* creature)
 	// Don't try and delete the creature if it doesn't exist
 	if(pos != this->combatants.end())
 	{
-		std::cout << creature->name << " is slain!\n";
+		std::cout << creature->id << " is slain!\n"; // uwaga, zmiana id moze zmienic kolejnosc działań
 
 		// Health == 0 is used in main as a condition to check if the creature is
 		// dead, but this function could be called when the creature is not killed
@@ -49,70 +58,18 @@ void Battle::kill(Creature* creature)
 
 	return;
 }
-
-Battle::Battle(std::vector<Creature*>& combatants)
-{
-	this->combatants = combatants;
-
-	// Construct the menu
-	this->battleOptions = Dialogue("What will you do?",
-	{
-		"Attack",
-		"Defend"
-	});
-
-	// Store the unique creature names and whether there is
-	// only one or more of them. This code assumes that the
-	// creatures have not already been assigned unique names,
-	// which should be the case as a battle cannot be left
-	// and then resumed again
-	std::map<std::string, int> names;
-	for(auto com : this->combatants)
-	{
-		// Skip the player, who shouldn't be renamed
-		if(com->id == "player") continue;
-		// If the name hasn't been recorded and the creature
-		// isn't the player, record the name
-		if(names.count(com->name) == 0)
-		{
-			names[com->name] = 0;
-		}
-		// If there is already one creature, record there are being
-		// more than one. We don't want the actual number, simply
-		// that there's more and so we should label them.
-		else if(names[com->name] == 0)
-		{
-			names[com->name] = 1;
-		}
-	}
-
-	// Creature unique names for the combatants
-	for(auto& com : this->combatants)
-	{
-		std::string newName = com->name;
-		// If the name is marked as being shared by more than
-		// one creature
-		if(names.count(com->name) > 0 && names[com->name] > 0)
-		{
-			// Append (1) to the end of the name, and then increase the
-			// number for the next creature
-			newName += " (" + std::to_string(names[com->name]) + ")";
-			names[com->name] += 1;
-		}
-		// Change the creature name to the new one, which might just be
-		// the same as the original
-		com->name = newName;
-	}
-}
+	//przydzielanie unikalnego id dla kilku przeciwników?
 
 void Battle::run()
 {
 	std::vector<Creature*>::iterator player;
 	std::vector<Creature*>::iterator end;
+
+	//backup postaci i przeciwnika
+
 	do
 	{
-		// Continue the battle until either the player dies,
-		// or there is only the player left
+		// walcz, aż zostanie jeden
 		player = std::find_if(this->combatants.begin(), this->combatants.end(),
 			[](Creature* a) { return a->id == "player"; });
 		end = this->combatants.end();
@@ -123,23 +80,44 @@ void Battle::run()
 
 	return;
 }
+Battle::Battle(std::vector<Creature*>& combatants)
+{
+}
+
 
 void Battle::nextTurn()
 {
-	// Queue of battle events. Fastest combatants will be
-	// at the start of the queue, and so will go first,
-	// whereas slower ones will be at the back
+	// kolejka, gracz pierwszy ("player">"enemy")
 	std::queue<BattleEvent> events;
-
-	// Sort the combatants in agility order
-	std::sort(combatants.begin(), combatants.end(), [](Creature* a, Creature* b) { return a->agility > b->agility; });
-
+	std::sort(combatants.begin(), combatants.end(), [](Creature* a, Creature* b) { return a->id > b->id; });//jak gracz to na początek
 	// Iterate over the combatants and decide what they should do,
 	// before adding the action to the event queue.
 	for(auto com : this->combatants)
 	{
+		int enemy_action = rand() % 5 + 1;
+		switch(enemy_action)
+		{
+			case 1:
+			{
+				std::cout<<"Przeciwnik szykuje unik!\n";
+				break;
+			}
+			case 2:
+			{
+				std::cout<<"Przeciwnik bedzie sie bronil!\n";
+				break;
+			}
+			default:
+			{
+				std::cout<<"Przeciwnik zaatakuje!\n";
+				break;
+			}
+		}
+
 		if(com->id == "player")
 		{
+			//wybór przeciwnika
+			/*
 			// Create the target selection dialogue
 			Dialogue targetSelection = Dialogue("Who?", {});
 			// Created every turn because some combatants may die
@@ -147,12 +125,38 @@ void Battle::nextTurn()
 			{
 				if(target->id != "player")
 				{
-					targetSelection.addChoice(target->name);
+					targetSelection.addChoice(target->id);
 				}
 			}
+			*/
 
-			// Ask the player for their action (attack or defend)
-			int choice = this->battleOptions.activate();
+			// zapytaj o akcję
+			std::cout<<"Co chcesz zrobic?\n1. Atak\n2. Szybki atak\n3. Silny atak\n4. Obrona\n5. Skupienie (na uniku)\n";
+			int choice;
+			std::cin>>choice;
+			//takie małe obejście dla obrony i uniku przeciwnika
+			if (enemy_action == 1)
+			{
+				int position = 1;
+					for(int i = 0; i < position; ++i)
+					{
+						if(this->combatants[i]->id == "player") ++position;
+					}
+					Creature* target = this->combatants[position-1];
+					// Add the attack command to the event queue
+					events.push(BattleEvent(com, target, BattleEventType::DEFEND_ENEMY));
+			}
+			if (enemy_action == 2)
+			{
+				int position = 1;
+					for(int i = 0; i < position; ++i)
+					{
+						if(this->combatants[i]->id == "player") ++position;
+					}
+					Creature* target = this->combatants[position-1];
+					// Add the attack command to the event queue
+					events.push(BattleEvent(com, target, BattleEventType::FOCUS_ENEMY));
+			}
 
 			switch(choice)
 			{
@@ -164,7 +168,10 @@ void Battle::nextTurn()
 					// the player removed, so we have to do some fancy
 					// arithmetic to find the actual location of the target
 					// and then convert that to a pointer
-					int position = targetSelection.activate();
+
+					// dla kilku przeciwników
+					//int position = targetSelection.activate();
+					int position = 1;
 					for(int i = 0; i < position; ++i)
 					{
 						if(this->combatants[i]->id == "player") ++position;
@@ -176,19 +183,51 @@ void Battle::nextTurn()
 				}
 				case 2:
 				{
-					// Player is defending, so do nothing
+					int position = 1;
+					for(int i = 0; i < position; ++i)
+					{
+						if(this->combatants[i]->id == "player") ++position;
+					}
+					Creature* target = this->combatants[position-1];
+					// Add the attack command to the event queue
+					events.push(BattleEvent(com, target, BattleEventType::ATTACK_FAST));
+					break;
+				}
+				case 3:
+				{
+					int position = 1;
+					for(int i = 0; i < position; ++i)
+					{
+						if(this->combatants[i]->id == "player") ++position;
+					}
+					Creature* target = this->combatants[position-1];
+					// Add the attack command to the event queue
+					events.push(BattleEvent(com, target, BattleEventType::ATTACK_STRONG));
+					break;
+				}
+				case 4:
+				{
+					// Player is defending
 					events.push(BattleEvent(com, nullptr, BattleEventType::DEFEND));
+					break;
+				}
+				case 5:
+				{
+					//Player dodges
+					events.push(BattleEvent(com,nullptr, BattleEventType::FOCUS));
 					break;
 				}
 			}
 		}
 		else
 		{
-			// Simple enemy AI where enemy constantly attacks player
-			Creature* player = *std::find_if(this->combatants.begin(), this->combatants.end(),
-				[](Creature* a) { return a->id == "player"; });
-
-			events.push(BattleEvent(com, player, BattleEventType::ATTACK));
+			if (enemy_action != 1 || enemy_action != 2)
+			{
+				// Simple enemy AI where enemy constantly attacks player
+				Creature* player = *std::find_if(this->combatants.begin(), this->combatants.end(),
+					[](Creature* a) { return a->id == "player"; });
+				events.push(BattleEvent(com, player, BattleEventType::ATTACK));
+			}
 		}
 	}
 
@@ -211,9 +250,54 @@ void Battle::nextTurn()
 				{
 					break;
 				}
-				std::cout << event.source->name
+				//działa?
+				std::cout << event.source->id
 					<< " attacks "
-					<< event.target->name
+					<< event.target->id
+					<< " for "
+					<< event.run()
+					<< " damage!\n";
+				// Delete slain enemies
+				if(event.target->hp <= 0)
+				{
+					this->kill(event.target);
+				}
+				break;
+			}
+			case BattleEventType::ATTACK_FAST:
+			{
+				auto a = this->combatants.begin();
+				auto b = this->combatants.end();
+				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
+				{
+					break;
+				}
+				//działa?
+				std::cout << event.source->id
+					<< " attacks "
+					<< event.target->id
+					<< " for "
+					<< event.run()
+					<< " damage!\n";
+				// Delete slain enemies
+				if(event.target->hp <= 0)
+				{
+					this->kill(event.target);
+				}
+				break;
+			}
+			case BattleEventType::ATTACK_STRONG:
+			{
+				auto a = this->combatants.begin();
+				auto b = this->combatants.end();
+				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
+				{
+					break;
+				}
+				//działa?
+				std::cout << event.source->id
+					<< " attacks "
+					<< event.target->id
 					<< " for "
 					<< event.run()
 					<< " damage!\n";
@@ -225,9 +309,41 @@ void Battle::nextTurn()
 				break;
 			}
 			case BattleEventType::DEFEND:
-				std::cout << event.source->name
-					<< " defends!\n";
+			{
+				std::cout << "Defense up!\n";
+				std::cout << event.source->defense
+					<<" -> "
+					<< event.run()
+					<< "!\n";
 				break;
+			}
+			case BattleEventType::FOCUS:
+			{
+				std::cout << "Agility up!\n";
+				std::cout << event.source->agility
+					<<" -> "
+					<< event.run()
+					<< "!\n";
+				break;
+			}
+			case BattleEventType::DEFEND_ENEMY:
+			{
+				std::cout << "Enemy agility up!\n";
+				std::cout << event.target->defense
+					<<" -> "
+					<< event.run()
+					<< "!\n";
+				break;
+			}
+			case BattleEventType::FOCUS_ENEMY:
+			{
+				std::cout << "Enemy agility up!\n";
+				std::cout << event.target->agility
+					<<" -> "
+					<< event.run()
+					<< "!\n";
+				break;
+			}
 			default:
 				break;
 		}
