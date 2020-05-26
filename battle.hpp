@@ -3,13 +3,11 @@
 
 #include <vector>
 
-#include "dialogue.hpp"
-
 class Creature;
 
 // Possible event types, should equate to what the player
 // can do in a battle
-enum class BattleEventType { ATTACK_NORMAL, ATTACK_FAST, ATTACK_STRONG, DEFEND, FOCUS, DEFEND_ENEMY, FOCUS_ENEMY };
+enum class BattleEventType { ATTACK, ATTACK_FAST, ATTACK_STRONG, DEFEND, FOCUS, DEFEND_ENEMY, FOCUS_ENEMY };
 
 class BattleEvent
 {
@@ -39,9 +37,6 @@ class Battle
 	// A vector is used because we need to get the nth element
 	// for use with a Dialogue
 	std::vector<Creature*> combatants;
-
-	// Actions that the player can take in the battle
-	Dialogue battleOptions;
 
 	// Remove a creature from the combatants list, and report that it's dead
 	void kill(Creature* creature);
