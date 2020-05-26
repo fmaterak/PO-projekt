@@ -7,17 +7,19 @@
 
 class EntityManager;
 
-class Creature : public Entity
+class Creature
 {
 	public:
+	std::string id;
 	int hp;
 	int maxHp;
 	int strength;
 	int defense;
 	int agility;
 	unsigned int xp;
+	int gold;
 	
-	Creature(std::string id, int hp, int strength,int defense, int agility,unsigned int xp);
+	Creature(std::string id, int hp, int strength,int defense, int agility,unsigned int xp, int gold);
 	
 	int attack(Creature* target);
 	int attack_fast(Creature* target);
