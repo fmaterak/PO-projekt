@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Creature::Creature(string id,int hp, int strength, int defense, int agility, unsigned int xp) : Entity(id)
+Creature::Creature(string id,int hp, int strength, int defense, int agility, unsigned int xp, int gold)
 {
 	this->hp = hp;
 	this->maxHp = hp;
@@ -13,6 +13,7 @@ Creature::Creature(string id,int hp, int strength, int defense, int agility, uns
 	this->defense = defense;
 	this->agility = agility;
 	this->xp = xp;
+	this->gold = gold;
 }
 
 int Creature::attack(Creature* target)
@@ -130,4 +131,5 @@ void Creature::enemy(int room)
 	this->defense = rand() % b + (a+1);
 	this->agility = rand() % b + (a+1);
 	this->xp = this->hp + 5*(this->strength); // tu szczególnie
+	this->gold = rand() % b;
 }
