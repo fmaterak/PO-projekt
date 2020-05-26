@@ -18,7 +18,7 @@ class Player : public Creature
 	unsigned level;
 	Player(string id, int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level);
 	Player();
-
+	
 	//xp do lvlupa
 	unsigned int xpToLevel(unsigned int level);
 	bool levelUp();
