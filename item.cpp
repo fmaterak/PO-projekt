@@ -53,7 +53,7 @@ void menu_ekwipunek()
 		}
 		case 2:
 		{
-			int tmp1;
+			
 
 			cout << "Chce kupic przedmiot o nr: ";
 			cin >> tmp1;
