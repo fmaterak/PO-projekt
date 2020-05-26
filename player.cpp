@@ -6,7 +6,7 @@
 #include "item.h"
 using namespace std;
 
-Player::Player(string id ,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level, int gold);
+Player::Player(string id ,int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level, unsigned int gold);
 
 Player::Player()
 {
