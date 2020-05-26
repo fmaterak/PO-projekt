@@ -19,7 +19,7 @@ int Creature::attack(Creature* target)
 {
 	// Damage done
 	int damage = 0;
-	
+
 	if(double(rand()) > target->agility) // Dopasować rand
 	{
 		// Atak
@@ -82,7 +82,7 @@ int Creature::attack_strong(Creature* target)
 		damage=attack-defense;
 		target->hp-=damage;
 	}
-	retrurn damage;
+	return damage;
 }
 int Creature::defend()
 {
