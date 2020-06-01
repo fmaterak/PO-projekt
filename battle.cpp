@@ -298,6 +298,12 @@ void Battle::nextTurn()
 			}
 			case BattleEventType::DEFEND_ENEMY:
 			{
+				auto a = this->combatants.begin();
+				auto b = this->combatants.end();
+				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
+				{
+					break;
+				}
 				std::cout << "Obrona przeciwnika rosnie!\n";
 				std::cout << event.target->defense
 					<<" -> "
@@ -307,6 +313,12 @@ void Battle::nextTurn()
 			}
 			case BattleEventType::FOCUS_ENEMY:
 			{
+				auto a = this->combatants.begin();
+				auto b = this->combatants.end();
+				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
+				{
+					break;
+				}
 				std::cout << "Zrecznosc przeciwnika rosnie!\n";
 				std::cout << event.target->agility
 					<<" -> "
