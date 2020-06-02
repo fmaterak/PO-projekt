@@ -29,7 +29,7 @@ bool Player::levelUp()
 	}
 	++level;
 	skill_points=5; //Ilość do rozdania
-	this->maxHp+=100; // <- Tutaj hp
+	this->maxHp+=5; // <- Tutaj hp
 	this->hp=this->maxHp;
 	cout<<"Zdrowie wzroslo do " << this->maxHp << "!\n";
 	cout<<"Punkty statystyk do rozdania: 5\n";
