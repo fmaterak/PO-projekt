@@ -122,8 +122,6 @@ void dialogueMenu(Player& player)
 			statystyki_przedmiotow();
 			break;//continue
 		}
-
-		// jesli nie ma przedmiotow prosi o zalozenie
 		
 		case 3:
 		{
