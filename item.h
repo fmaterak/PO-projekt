@@ -1,4 +1,4 @@
-#ifndef ITEM_H
+##ifndef ITEM_H
 #define ITEM_H
 
 #include <iostream>
@@ -34,5 +34,6 @@ Item* wczytaj_sklep(int* i);
 Item* usun(int* i, Item kat[]);
 Item* zmniejsz(int* i, Item kat[]);
 Item* powieksz(int i, Item);
+Item* dodaj(int* i, Item kat[]);
 
 #endif
