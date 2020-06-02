@@ -45,7 +45,7 @@ void Battle::kill(Creature* creature)
 	// Nie proboj jezeli nie istnieje
 	if(pos != this->combatants.end())
 	{
-		std::cout << creature->id << " zostal pokonany!\n"; // uwaga, zmiana id moze zmienic kolejnosc działań
+		std::cout << creature->id << " zostal pokonany!\n\n"; // uwaga, zmiana id moze zmienic kolejnosc działań
 
 		// Upewnienie sie ze nie zyje :)
 		creature->hp = 0;
