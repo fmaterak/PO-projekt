@@ -5,8 +5,9 @@
 
 using namespace std;
 
-Creature::Creature(string id,int hp, int strength, int defense, int agility, unsigned int xp, int gold)
+Creature::Creature(string id ,int hp, int strength, int defense, int agility, unsigned int xp, unsigned int gold)
 {
+	this->id = id;
 	this->hp = hp;
 	this->maxHp = hp;
 	this->strength = strength;
