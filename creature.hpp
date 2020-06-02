@@ -5,7 +5,7 @@
 #include <string>
 #include "entity.hpp"
 
-class EntityManager;
+//class EntityManager;
 
 class Creature
 {
@@ -19,7 +19,7 @@ class Creature
 	unsigned int xp;
 	int gold;
 	
-	Creature(std::string id, int hp, int strength,int defense, int agility,unsigned int xp, unsigned int gold);
+	Creature(std::string id, int hp, int strength,int defense, int agility, unsigned int xp, unsigned int gold);
 	
 	int attack(Creature* target);
 	int attack_fast(Creature* target);
@@ -30,7 +30,8 @@ class Creature
 	int focus_enemy(Creature* target);
 	
 	//losowanie statystyk wroga
-	void enemy(int room);
+	//void enemy(int room);
+	Creature enemy(int room);
 };
 
 #endif /* CREATURE_HPP */

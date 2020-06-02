@@ -1,4 +1,4 @@
-#include "item.h"
+#include "item.hpp"
 
 using namespace std;
 
@@ -94,13 +94,12 @@ void menu_ekwipunek()
 					cout << "Nie masz wystarczajaco pieniedzy!" << endl;
 				}
 			}
-
-
 			system("PAUSE");
 			system("cls");
 			break;
 		}
-		}
+	}
+	break;
 	}
 	case 4:
 	{
@@ -126,6 +125,7 @@ void menu_ekwipunek()
 			katalog = wczytaj_w_plecaku(&l);
 			katalog = dodaj(&l, katalog);
 		}
+		break;
 	}
 	case 5:
 	{
@@ -151,6 +151,7 @@ void menu_ekwipunek()
 			katalog = wczytaj_zalozone(&l);
 			katalog = dodaj(&l, katalog);
 		}
+	break;
 	}
 	}
 }

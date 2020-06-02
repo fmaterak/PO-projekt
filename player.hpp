@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 #include "creature.hpp"
-#include "item.h"
+#include "item.hpp"
 
 using namespace std;
 /*
@@ -15,7 +15,7 @@ class Armor;
 class Player : public Creature
 {
 	public:
-	unsigned level;
+	unsigned int level;
 	Player(string id, int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level, unsigned int gold);
 	Player(void);
 	

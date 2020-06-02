@@ -8,5 +8,3 @@ Short_sword 43 0 13 5
 Rusty_spear 18 0 5 -1
 Lid 15 2 0 0
 Demaged_shield 22 4 0 -4
-
-Name price defence damage agility

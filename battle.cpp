@@ -64,7 +64,7 @@ void Battle::run()
 
 	do
 	{
-		// walcz, aż zostanie jeden
+		// walcz, aż zostanie tylko gracz, lub bohater zginie
 		player = std::find_if(this->combatants.begin(), this->combatants.end(),
 			[](Creature* a) { return a->id == "player"; });
 		end = this->combatants.end();
@@ -75,6 +75,7 @@ void Battle::run()
 
 	return;
 }
+
 Battle::Battle(std::vector<Creature*>& combatants)
 {
 	this->combatants=combatants;
@@ -91,7 +92,7 @@ void Battle::nextTurn()
 	for(auto com : this->combatants)
 	{
 		// baardzo proste ai przciwnika
-		if(com->id == "player")//zapobieganie 2 akcjom przeciwnika
+		if(com->id=="player")
 		{
 		enemy_action = rand() % 5 + 1;
 		switch(enemy_action)
@@ -113,7 +114,6 @@ void Battle::nextTurn()
 			}
 		}
 		}
-
 		if(com->id == "player")
 		{
 			// tu by byl wybor przeciwnika
@@ -123,7 +123,6 @@ void Battle::nextTurn()
 			int choice;
 			std::cin>>choice;
 			std::cout<<"\n";
-			
 			//takie male obejscie dla obrony i uniku przeciwnika
 			if (enemy_action == 1)
 			{
@@ -152,7 +151,7 @@ void Battle::nextTurn()
 				case 1:
 				{
 					// dla kilku przeciwników bylby tutaj wybor
-					
+
 					// dla 1 przeciwnika nie ma wyboru :v
 					int position = 1;
 					for(int i = 0; i < position; ++i)
@@ -172,7 +171,7 @@ void Battle::nextTurn()
 						if(this->combatants[i]->id == "player") ++position;
 					}
 					Creature* target = this->combatants[position-1];
-					
+
 					events.push(BattleEvent(com, target, BattleEventType::ATTACK_FAST));
 					break;
 				}
@@ -184,7 +183,7 @@ void Battle::nextTurn()
 						if(this->combatants[i]->id == "player") ++position;
 					}
 					Creature* target = this->combatants[position-1];
-					
+
 					events.push(BattleEvent(com, target, BattleEventType::ATTACK_STRONG));
 					break;
 				}
@@ -204,7 +203,7 @@ void Battle::nextTurn()
 		}
 		else
 		{
-			if (enemy_action != 1 || enemy_action != 2)
+			if (enemy_action != 1 && enemy_action != 2)
 			{
 				// atak przciwnika
 				Creature* player = *std::find_if(this->combatants.begin(), this->combatants.end(),
@@ -213,6 +212,10 @@ void Battle::nextTurn()
 			}
 		}
 	}
+
+
+
+
 
 	// doprowadz do eventow
 	while(!events.empty())
@@ -230,13 +233,8 @@ void Battle::nextTurn()
 				{
 					break;
 				}
-				
-				std::cout << event.source->id
-					<< " bije "
-					<< event.target->id
-					<< " za "
-					<< event.run()
-					<< " obrazen!\n";
+
+				std::cout << event.source->id<< " bije "<< event.target->id<< " za "<< event.run()<< " obrazen!\n";
 				// zabij jesli nie zyje
 				if(event.target->hp <= 0)
 				{
@@ -253,12 +251,8 @@ void Battle::nextTurn()
 					break;
 				}
 				std::cout << event.source->id
-					<< " bije "
-					<< event.target->id
-					<< " za "
-					<< event.run()
-					<< " obrazen!\n";
-				
+					<< " bije "<< event.target->id<<" za "<< event.run()<< " obrazen!\n";
+
 				if(event.target->hp <= 0)
 				{
 					this->kill(event.target);
@@ -273,12 +267,7 @@ void Battle::nextTurn()
 				{
 					break;
 				}
-				std::cout << event.source->id
-					<< " bije "
-					<< event.target->id
-					<< " za "
-					<< event.run()
-					<< " obrazen!\n";
+				std::cout << event.source->id<< " bije "<< event.target->id<< " za "<< event.run()<< " obrazen!\n";
 				if(event.target->hp <= 0)
 				{
 					this->kill(event.target);
@@ -288,49 +277,25 @@ void Battle::nextTurn()
 			case BattleEventType::DEFEND:
 			{
 				std::cout << "Obrona rosnie!\n";
-				std::cout << event.source->defense
-					<<" -> "
-					<< event.run()
-					<< "!\n";
+				std::cout << event.source->defense<<" -> "<< event.run()<< "!\n";
 				break;
 			}
 			case BattleEventType::FOCUS:
 			{
 				std::cout << "Zrecznosc rosnie!\n";
-				std::cout << event.source->agility
-					<<" -> "
-					<< event.run()
-					<< "!\n";
+				std::cout << event.source->agility<<" -> "<< event.run()<< "!\n";
 				break;
 			}
 			case BattleEventType::DEFEND_ENEMY:
 			{
-				auto a = this->combatants.begin();
-				auto b = this->combatants.end();
-				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
-				{
-					break;
-				}
 				std::cout << "Obrona przeciwnika rosnie!\n";
-				std::cout << event.target->defense
-					<<" -> "
-					<< event.run()
-					<< "!\n";
+				std::cout << event.target->defense<<" -> "<< event.run()<< "!\n";
 				break;
 			}
 			case BattleEventType::FOCUS_ENEMY:
 			{
-				auto a = this->combatants.begin();
-				auto b = this->combatants.end();
-				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
-				{
-					break;
-				}
 				std::cout << "Zrecznosc przeciwnika rosnie!\n";
-				std::cout << event.target->agility
-					<<" -> "
-					<< event.run()
-					<< "!\n";
+				std::cout << event.target->agility<<" -> "<< event.run()<< "!\n";
 				break;
 			}
 			default:

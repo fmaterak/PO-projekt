@@ -9,7 +9,7 @@
 #include <list>
 #include <map>
 
-#include "item.h"
+#include "item.hpp"
 #include "creature.hpp"
 #include "entity.hpp"
 #include "player.hpp"
@@ -18,8 +18,8 @@
 // menu startowe
 Player startGame();
 
-// wyswietla przedmioty, statystyki
 void dialogueMenu(Player& player);
+// wyswietla przedmioty, statystyki
 int main()
 {
 	std::srand(std::time(nullptr));
@@ -27,6 +27,8 @@ int main()
     unsigned int rounds=0;
 	Player player = startGame();
 	player.hp=20;
+	Creature wrog= Creature("enemy",10,5,3,3,10,10);
+	
 
 	// gra trwa do zerwania petli
 	while(1)
@@ -35,9 +37,9 @@ int main()
                 std::cout<<"Gratulacje! Wygrales";
                 return 0;
             }
-
             std::vector<Creature*> combatants;
             combatants.push_back(&player);
+            combatants.push_back(&wrog);
 			Battle battle(combatants);
 			battle.run();
 
@@ -46,7 +48,8 @@ int main()
 			{
 			    rounds++;
 			    dialogueMenu(player);
-                system("cls");
+                //system("cls");
+                std::cout<<"\n\n";
 				unsigned int xp = 0;
 				std::cout << "Zdobyles " << xp << " doswiadczenia!\n";
 				player.xp += xp;
@@ -69,12 +72,11 @@ int main()
 Player startGame()
 {
     std::cout <<"Witaj w grze! \nWalczysz na arenie, nie masz mozliwosci leczenia, czeka Cie 10 walk jezeli przezyjesz zwyciezysz! \n";
-	std::cout << "Jakie imie chcesz wybrac?" << std::endl;
-	std::string name;
-	std::cin >> name;
+    
     int result;
     std::cout << "Jaka klase postaci chcesz wybrac? \n 1-wojownik \n 2-bandyta" << std::endl;
     std::cin >> result;
+    /*
 	std::ifstream f((name).c_str());
 	if(f.good())
 	{
@@ -82,28 +84,27 @@ Player startGame()
 
 		// Return the player
 	}
-	/*
 	else
-	{
-		f.close();
+	*/
+	//{
+		//f.close();
 
 
 		switch(result)
 		{
 			 //Wojownik skupia sie na sile
 			case 1:
-				return Player(name, 15, 5, 4, 1, 0, 1);
+				return Player("player", 15, 100, 4, 1, 0, 1, 0);
 
 			//Bandyta skupia sie na zrecznosci
 			case 2:
-				return Player(name, 15, 4, 5, 1, 0, 1);
+				return Player("player", 15, 4, 5, 1, 0, 1, 0);
 
 			// case dla bezpieczenstwa
 			default:
-				return Player(name, 15, 4, 4, 1, 0, 1);
-		}
+				return Player("player", 15, 4, 4, 1, 0, 1, 0);
+		//}
 	}
-	*/
 }
 
 void dialogueMenu(Player& player)

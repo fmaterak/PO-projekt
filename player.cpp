@@ -1,21 +1,22 @@
 #include <cmath>
+#include <iostream>
 #include <fstream>
 
 #include "player.hpp"
 #include "creature.hpp"
-#include "item.h"
+#include "item.hpp"
+
 using namespace std;
 
+//Oblicza potrzebne xp do lvlup-a --- Do dopracowania
 Player::Player(string id, int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level, unsigned int gold):
 Creature(id, hp, strength, defense, agility, xp, gold)
 {
 	this->level=level;
 }
-
-//Oblicza potrzebne xp do lvlup-a --- Do dopracowania
 unsigned int Player::xpToLevel(unsigned int level)
 {
-	return (unsigned int)(1.5 * pow(this->level,3)); //TUTAJ
+	return (unsigned int)(1.5 * pow(level,3)); //TUTAJ
 }
 bool Player::levelUp()
 {
