@@ -5,17 +5,13 @@
 #include "creature.hpp"
 #include "item.h"
 using namespace std;
-/*
-Player::Player()
+
+Player::Player(string id, int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level, unsigned int gold):
+Creature(id, hp, strength, defense, agility, xp, gold)
 {
-	ifstream file("player.txt");
-	while (file)
-	{
-		file>>this->id>>this->hp>>this->strength>>this->defense>>this->agility>>this->xp>>this->level>>this->gold;
-	}
-	file.close();
+	this->level=level;
 }
-*/
+
 //Oblicza potrzebne xp do lvlup-a --- Do dopracowania
 unsigned int Player::xpToLevel(unsigned int level)
 {
