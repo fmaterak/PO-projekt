@@ -13,60 +13,24 @@ class Item
 public:
 
 	string name;
-	int id, agility;
+	int agility, defence, damage;
 	float price;
-
-
-	//Item(string n = "Brak nazwy", int i = 0, int a = 0, float p = 0)
-	//{
-	//	name = n;
-	//	id = i;
-	//	agility = a;
-	//	price = p;
-	//}
 };
+float gold;
 
-class Armor :public Item
-{
-public:
+string nameT;
+int agilityT, defenceT, damageT;
+float priceT;
+int agilityS, defenceS, damageS;
+int tmp1;
 
-	int defense;
+void menu_ekwipunek();
+void statystyki_przedmiotow();
 
-
-	//Armor( string n, int i, int a, float p, int d = 0)
-	//:Item(n, i, a, p)
-	//{
-	//	defense = d;
-	//}
-};
-
-class Weapon :public Item
-{
-public:
-
-	int damage;
-
-
-	//Weapon(string n, int i, int a, float p, int dm = 0)
-	//	:Item(n, i, a, p)
-	//{
-	//	damage = dm;
-	//}
-
-};
-
-class Shield :public Item
-{
-public:
-
-	int defense;
-
-
-	//Shield(string n, int i, int a, float p, int d1 = 0)
-	//	:Item(n, i, a, p)
-	//{
-	//	defense = d1;
-	//}
-};
-
-#endif
+void wypis_wszystkich(int i, Item kat[]);
+Item* wczytaj_zalozone(int* i);
+Item* wczytaj_w_plecaku(int* i);
+Item* wczytaj_sklep(int* i);
+Item* usun(int* i, Item kat[]);
+Item* zmniejsz(int* i, Item kat[]);
+Item* powieksz(int i, Item
