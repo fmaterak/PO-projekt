@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "dialogue.hpp"
+//#include "dialogue.hpp"
 
 class Creature;
 
@@ -13,7 +13,7 @@ enum class BattleEventType { ATTACK_NORMAL, ATTACK_FAST, ATTACK_STRONG, DEFEND, 
 
 class BattleEvent
 {
-	public:
+public:
 
 	// the attacker
 	Creature* source;
@@ -32,7 +32,7 @@ class BattleEvent
 
 class Battle
 {
-	private:
+private:
 
 	// All the creatures that are participating in the fight.
 	// We assume the player is a Creature with id "player".
@@ -52,7 +52,7 @@ class Battle
 	// proceeding through the queue and running each action.
 	void nextTurn();
 
-	public:
+public:
 
 	// Constructor
 	Battle(std::vector<Creature*>& combatants);
