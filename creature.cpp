@@ -131,39 +131,3 @@ int Creature::focus_enemy(Creature* target)
 	enemy_ag=target->agility;
 	return enemy_ag;
 }
-
-// Losuj statystyki przeciwnika
-/*
-void Creature::enemy(int room)
-{
-	int a = room; // <- przelicznik trudności/pomieszczenie
-	int b=3; // <- zakres losowania (np. str 0-2)
-	
-	// Do dopracowania
-	this->id="enemy";
-	this->hp = rand() % b + (5*a+1);
-	this->maxHp = this->hp;
-	this->strength = rand() % b + (a+1);
-	this->defense = rand() % b + (a+1);
-	this->agility = rand() % b + (a+1);
-	this->xp = this->hp + 5*(this->strength); // tu szczególnie
-	this->gold = rand() % b;
-}*/
-/*
-Creature Creature::enemy(int room)
-{
-	int a = room; // <- przelicznik trudności/pomieszczenie
-	int b=3; // <- zakres losowania (np. str 0-2)
-	
-	// Do dopracowania
-	id="enemy";
-	hp = rand() % b + (5*a+1);
-	maxHp = this->hp;
-	strength = rand() % b + (a+1);
-	defense = rand() % b + (a+1);
-	agility = rand() % b + (a+1);
-	xp = this->hp + 5*(this->strength); // tu szczególnie
-	gold = rand() % b;
-	return Creature(id,hp,strength,defense,agility,xp,gold);
-}
-*/

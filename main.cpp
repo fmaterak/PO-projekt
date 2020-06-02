@@ -51,7 +51,7 @@ int main()
 			{
 			    rounds++;
 			    
-                //system("cls");
+                system("cls");
                 //std::cout<<"\n\n";
 				std::cout << "Zdobyles " << wrog.xp << " doswiadczenia!\n";
 				player.xp += wrog.xp;
@@ -87,12 +87,14 @@ Player startGame()
 		{
 			 //Wojownik skupia sie na sile
 			case 1:
-				return Player("player", 15, 100, 4, 1, 0, 1, 0);
+				return Player("player", 15, 5, 4, 1, 0, 1, 0);
 
 			//Bandyta skupia sie na zrecznosci
 			case 2:
-				return Player("player", 15, 50, 5, 1, 0, 1, 0);
+				return Player("player", 15, 4, 5, 1, 0, 1, 0);
 
+			case 3:
+				return Player("player", 100, 100, 50, 1, 0, 1, 100);
 			// case dla bezpieczenstwa
 			default:
 				return Player("player", 15, 4, 4, 1, 0, 1, 0);

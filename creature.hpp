@@ -28,10 +28,6 @@ class Creature
 	int focus();
 	int defend_enemy(Creature* target);
 	int focus_enemy(Creature* target);
-	
-	//losowanie statystyk wroga
-	//void enemy(int room);
-	Creature enemy(int room);
 };
 
 #endif /* CREATURE_HPP */
