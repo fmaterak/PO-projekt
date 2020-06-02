@@ -1,4 +1,5 @@
 #include "item.h"
+
 using namespace std;
 
 
@@ -10,9 +11,9 @@ void menu_ekwipunek()
 	cout << "[3] - Sklep." << endl;
 	cout << "[4] - Chce zdjac przedmiot." << endl;
 	cout << "[5] - Chce zalozyc przedmiot." << endl;
-	cout << "Posiadasz: "<<gold<<"zlota" << endl;
+	cout << "Posiadasz: " << gold << "zlota" << endl;
 
-	int menu_nr=-1;
+	int menu_nr = -1;
 	Item* katalog = new Item;
 	int l = -1;
 
@@ -53,7 +54,7 @@ void menu_ekwipunek()
 		}
 		case 2:
 		{
-			
+			//int tmp1;
 
 			cout << "Chce kupic przedmiot o nr: ";
 			cin >> tmp1;
@@ -109,7 +110,7 @@ void menu_ekwipunek()
 			defenceT = katalog[tmp2].defence;
 			damageT = katalog[tmp2].damage;
 			agilityT = katalog[tmp2].agility;
-			
+
 			katalog = zmniejsz(&l, katalog);
 
 			katalog = wczytaj_w_plecaku(&l);
@@ -141,6 +142,19 @@ void menu_ekwipunek()
 			katalog = dodaj(&l, katalog);
 		}
 	}
+	}
+}
+void statystyki_przedmiotow()
+{
+	Item* katalog = new Item;
+	int l = -1;
+	agilityS = defenceS = damageS = 0;
+	katalog = wczytaj_zalozone(&l);
+	for (int j = 0; l > j; j++)
+	{
+		agilityS = agilityS + katalog[j].agility;
+		defenceS = defenceS + katalog[j].defence;
+		damageS = damageS + katalog[j].damage;
 	}
 }
 
@@ -237,11 +251,11 @@ Item* usun(int* i, Item kat[])
 		}
 		else
 		{
-			nowa[j].name = kat[j+1].name;
-			nowa[j].price = kat[j+1].price;
-			nowa[j].defence = kat[j+1].defence;
-			nowa[j].damage = kat[j+1].damage;
-			nowa[j].agility = kat[j+1].agility;
+			nowa[j].name = kat[j + 1].name;
+			nowa[j].price = kat[j + 1].price;
+			nowa[j].defence = kat[j + 1].defence;
+			nowa[j].damage = kat[j + 1].damage;
+			nowa[j].agility = kat[j + 1].agility;
 		}
 	}
 	delete[]kat;
