@@ -6,7 +6,7 @@
 
 #include "battle.hpp"
 #include "creature.hpp"
-#include "dialogue.hpp"
+//#include "dialogue.hpp"
 
 BattleEvent::BattleEvent(Creature* source, Creature* target, BattleEventType type)
 {
@@ -17,20 +17,20 @@ BattleEvent::BattleEvent(Creature* source, Creature* target, BattleEventType typ
 
 int BattleEvent::run()
 {
-	switch(type)
+	switch (type)
 	{
-		case BattleEventType::ATTACK_NORMAL:
-			return source->attack(target);
-		case BattleEventType::ATTACK_FAST:
-			return source->attack_fast(target);
-		case BattleEventType::ATTACK_STRONG:
-			return source->attack(target);
-		case BattleEventType::DEFEND:
-			return source->defend;
-		case BattleEventType::FOCUS:
-			return source->focus;
-		default:
-			return 0;
+	case BattleEventType::ATTACK_NORMAL:
+		return source->attack(target);
+	case BattleEventType::ATTACK_FAST:
+		return source->attack_fast(target);
+	case BattleEventType::ATTACK_STRONG:
+		return source->attack(target);
+	case BattleEventType::DEFEND:
+		return source->defend;
+	case BattleEventType::FOCUS:
+		return source->focus;
+	default:
+		return 0;
 	}
 }
 
@@ -40,7 +40,7 @@ void Battle::kill(Creature* creature)
 	auto pos = std::find(this->combatants.begin(), this->combatants.end(), creature);
 
 	// Don't try and delete the creature if it doesn't exist
-	if(pos != this->combatants.end())
+	if (pos != this->combatants.end())
 	{
 		std::cout << creature->id << " is slain!\n";
 
@@ -62,64 +62,63 @@ Battle::Battle(std::vector<Creature*>& combatants)
 
 	// Construct the menu
 	this->battleOptions = Dialogue("What will you do?",
-	{
-		"Attack",
-		"Fast attack",
-		"Strong attack",
-		"Defend",
-		"Focus"
-	});
+		{
+			"Attack",
+			"Fast attack",
+			"Strong attack",
+			"Defend",
+			"Focus"
+		});
 
 	// przydzielanie unikalnego id dla kilku przeciwników
 
-void Battle::run()
-{
-	std::vector<Creature*>::iterator player;
-	std::vector<Creature*>::iterator end;
-	do
+	void Battle::run()
 	{
-		// walcz, aż zostanie jeden
-		player = std::find_if(this->combatants.begin(), this->combatants.end(),
-			[](Creature* a) { return a->id == "player"; });
-		end = this->combatants.end();
-
-		this->nextTurn();
-	}
-	while(player != end && this->combatants.size() > 1);
-
-	return;
-}
-
-void Battle::nextTurn()
-{
-	// kolejka, gracz pierwszy ("player">"enemy")
-	std::queue<BattleEvent> events;
-	std::sort(combatants.begin(), combatants.end(), [](Creature* a, Creature* b) { return a->id > b->id; });//jak gracz to na początek
-	// Iterate over the combatants and decide what they should do,
-	// before adding the action to the event queue.
-	for(auto com : this->combatants)
-	{
-		if(com->id == "player")
+		std::vector<Creature*>::iterator player;
+		std::vector<Creature*>::iterator end;
+		do
 		{
-			//wybór przeciwnika
-			
-			// Create the target selection dialogue
-			Dialogue targetSelection = Dialogue("Who?", {});
-			// Created every turn because some combatants may die
-			for(auto target : this->combatants)
-			{
-				if(target->id != "player")
-				{
-					targetSelection.addChoice(target->id);
-				}
-			}
-			*/
-			
-			// Ask the player for their action (attack or defend)
-			int choice = this->battleOptions.activate();
+			// walcz, aż zostanie jeden
+			player = std::find_if(this->combatants.begin(), this->combatants.end(),
+				[](Creature* a) { return a->id == "player"; });
+			end = this->combatants.end();
 
-			switch(choice)
+			this->nextTurn();
+		} while (player != end && this->combatants.size() > 1);
+
+		return;
+	}
+
+	void Battle::nextTurn()
+	{
+		// kolejka, gracz pierwszy ("player">"enemy")
+		std::queue<BattleEvent> events;
+		std::sort(combatants.begin(), combatants.end(), [](Creature* a, Creature* b) { return a->id > b->id; });//jak gracz to na początek
+		// Iterate over the combatants and decide what they should do,
+		// before adding the action to the event queue.
+		for (auto com : this->combatants)
+		{
+			if (com->id == "player")
 			{
+				//wybór przeciwnika
+
+				// Create the target selection dialogue
+				Dialogue targetSelection = Dialogue("Who?", {});
+				// Created every turn because some combatants may die
+				for (auto target : this->combatants)
+				{
+					if (target->id != "player")
+					{
+						targetSelection.addChoice(target->id);
+					}
+				}
+				
+
+					// Ask the player for their action (attack or defend)
+					int choice = this->battleOptions.activate();
+
+				switch (choice)
+				{
 				default:
 				case 1:
 				{
@@ -129,11 +128,11 @@ void Battle::nextTurn()
 					// arithmetic to find the actual location of the target
 					// and then convert that to a pointer
 					int position = targetSelection.activate();
-					for(int i = 0; i < position; ++i)
+					for (int i = 0; i < position; ++i)
 					{
-						if(this->combatants[i]->id == "player") ++position;
+						if (this->combatants[i]->id == "player") ++position;
 					}
-					Creature* target = this->combatants[position-1];
+					Creature* target = this->combatants[position - 1];
 					// Add the attack command to the event queue
 					events.push(BattleEvent(com, target, BattleEventType::ATTACK));
 					break;
@@ -141,11 +140,11 @@ void Battle::nextTurn()
 				case 2:
 				{
 					int position = targetSelection.activate();
-					for(int i = 0; i < position; ++i)
+					for (int i = 0; i < position; ++i)
 					{
-						if(this->combatants[i]->id == "player") ++position;
+						if (this->combatants[i]->id == "player") ++position;
 					}
-					Creature* target = this->combatants[position-1];
+					Creature* target = this->combatants[position - 1];
 					// Add the attack command to the event queue
 					events.push(BattleEvent(com, target, BattleEventType::ATTACK_FAST));
 					break;
@@ -153,11 +152,11 @@ void Battle::nextTurn()
 				case 3:
 				{
 					int position = targetSelection.activate();
-					for(int i = 0; i < position; ++i)
+					for (int i = 0; i < position; ++i)
 					{
-						if(this->combatants[i]->id == "player") ++position;
+						if (this->combatants[i]->id == "player") ++position;
 					}
-					Creature* target = this->combatants[position-1];
+					Creature* target = this->combatants[position - 1];
 					// Add the attack command to the event queue
 					events.push(BattleEvent(com, target, BattleEventType::ATTACK_STRONG));
 					break;
@@ -171,29 +170,29 @@ void Battle::nextTurn()
 				case 5:
 				{
 					//Player dodges
-					events.push(BattleEvent(com,nullptr, BattleEventType::FOCUS));
+					events.push(BattleEvent(com, nullptr, BattleEventType::FOCUS));
 					break;
 				}
+				}
+			}
+			else
+			{
+				// Simple enemy AI where enemy constantly attacks player
+				Creature* player = *std::find_if(this->combatants.begin(), this->combatants.end(),
+					[](Creature* a) { return a->id == "player"; });
+
+				events.push(BattleEvent(com, player, BattleEventType::ATTACK));
 			}
 		}
-		else
-		{
-			// Simple enemy AI where enemy constantly attacks player
-			Creature* player = *std::find_if(this->combatants.begin(), this->combatants.end(),
-				[](Creature* a) { return a->id == "player"; });
 
-			events.push(BattleEvent(com, player, BattleEventType::ATTACK));
-		}
-	}
-
-	// Take each event from the queue in turn and process them,
-	// displaying the results
-	while(!events.empty())
-	{
-		// Take event from the front of the queue
-		BattleEvent event = events.front();
-		switch(event.type)
+		// Take each event from the queue in turn and process them,
+		// displaying the results
+		while (!events.empty())
 		{
+			// Take event from the front of the queue
+			BattleEvent event = events.front();
+			switch (event.type)
+			{
 			case BattleEventType::ATTACK:
 			{
 				// The event can't be run if either the source or the
@@ -201,7 +200,7 @@ void Battle::nextTurn()
 				// must check that they're valid first
 				auto a = this->combatants.begin();
 				auto b = this->combatants.end();
-				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
+				if (std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
 				{
 					break;
 				}
@@ -213,7 +212,7 @@ void Battle::nextTurn()
 					<< event.run()
 					<< " damage!\n";
 				// Delete slain enemies
-				if(event.target->hp <= 0)
+				if (event.target->hp <= 0)
 				{
 					this->kill(event.target);
 				}
@@ -223,7 +222,7 @@ void Battle::nextTurn()
 			{
 				auto a = this->combatants.begin();
 				auto b = this->combatants.end();
-				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
+				if (std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
 				{
 					break;
 				}
@@ -235,7 +234,7 @@ void Battle::nextTurn()
 					<< event.run()
 					<< " damage!\n";
 				// Delete slain enemies
-				if(event.target->hp <= 0)
+				if (event.target->hp <= 0)
 				{
 					this->kill(event.target);
 				}
@@ -244,7 +243,7 @@ void Battle::nextTurn()
 			{
 				auto a = this->combatants.begin();
 				auto b = this->combatants.end();
-				if(std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
+				if (std::find(a, b, event.source) == b || std::find(a, b, event.target) == b)
 				{
 					break;
 				}
@@ -256,7 +255,7 @@ void Battle::nextTurn()
 					<< event.run()
 					<< " damage!\n";
 				// Delete slain enemies
-				if(event.target->hp <= 0)
+				if (event.target->hp <= 0)
 				{
 					this->kill(event.target);
 				}
@@ -264,20 +263,20 @@ void Battle::nextTurn()
 			case BattleEventType::DEFEND:
 				std::cout << "Defense up!\n";
 				std::cout << event.source->defense
-					<<" -> "
+					<< " -> "
 					<< event.run()
 					<< "!\n";
 				break;
 			case BattleEventType::FOCUS:
 				std::cout << " Agility up!\n";
 				std::cout << event.source->agility
-					<<" -> "
+					<< " -> "
 					<< event.run()
 					<< "!\n";
 				break;
 			default:
 				break;
-		}
-		events.pop();
-	}
-}
+			}
+			events.pop();
+			}
+			}
