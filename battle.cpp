@@ -87,20 +87,23 @@ void Battle::nextTurn()
 	std::queue<BattleEvent> events;
 	std::sort(combatants.begin(), combatants.end(), [](Creature* a, Creature* b) { return a->id > b->id; });//jak gracz to na początek
 	// przelatywanie po uczestnikach walki
+	int enemy_action;
 	for(auto com : this->combatants)
 	{
 		// baardzo proste ai przciwnika
-		int enemy_action = rand() % 5 + 1;
+		if(com->id == "player")//zapobieganie 2 akcjom przeciwnika
+		{
+		enemy_action = rand() % 5 + 1;
 		switch(enemy_action)
 		{
 			case 1:
 			{
-				std::cout<<"Przeciwnik szykuje unik!\n";
+				std::cout<<"Przeciwnik sie broni!\n";
 				break;
 			}
 			case 2:
 			{
-				std::cout<<"Przeciwnik sie broni!\n";
+				std::cout<<"Przeciwnik szykuje unik!\n";
 				break;
 			}
 			default:
@@ -108,6 +111,7 @@ void Battle::nextTurn()
 				std::cout<<"Przeciwnik zaatakuje!\n";
 				break;
 			}
+		}
 		}
 
 		if(com->id == "player")
@@ -118,6 +122,8 @@ void Battle::nextTurn()
 			std::cout<<"Co chcesz zrobic?\n1. Atak\n2. Szybki atak\n3. Silny atak\n4. Obrona\n5. Skupienie (na uniku)\n";
 			int choice;
 			std::cin>>choice;
+			std::cout<<"\n";
+			
 			//takie male obejscie dla obrony i uniku przeciwnika
 			if (enemy_action == 1)
 			{
