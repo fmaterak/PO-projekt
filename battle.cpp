@@ -77,6 +77,7 @@ void Battle::run()
 }
 Battle::Battle(std::vector<Creature*>& combatants)
 {
+	this->combatants=combatants;
 }
 
 
