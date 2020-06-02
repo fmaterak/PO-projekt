@@ -3,30 +3,35 @@
 
 #include <cstdlib>
 #include <string>
-//#include "entity.hpp"
-//#include "inventory.hpp"
+#include "entity.hpp"
 
-class EntityManager;
+//class EntityManager;
 
-class Creature : public Entity
+class Creature
 {
-public:
+	public:
+	std::string id;
 	int hp;
 	int maxHp;
 	int strength;
 	int defense;
 	int agility;
 	unsigned int xp;
-
-	Creature(std::string id, int hp, int strength, int defense, int agility, unsigned int xp);
-	Creature();
+	int gold;
+	
+	Creature(std::string id, int hp, int strength,int defense, int agility, unsigned int xp, unsigned int gold);
+	
 	int attack(Creature* target);
 	int attack_fast(Creature* target);
 	int attack_strong(Creature* target);
 	int defend();
 	int focus();
+	int defend_enemy(Creature* target);
+	int focus_enemy(Creature* target);
+	
 	//losowanie statystyk wroga
-	void enemy(int room);
+	//void enemy(int room);
+	Creature enemy(int room);
 };
 
 #endif /* CREATURE_HPP */

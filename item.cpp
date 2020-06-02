@@ -1,18 +1,30 @@
-#include "item.h"
+#include "item.hpp"
+
 using namespace std;
 
 
 // MENU OD PRZEDMIOTOW WSZYSTKICH
-void menu_ekwipunek()
+//int gold;
+
+string nameT;
+int agilityT, defenceT, damageT;
+int priceT;
+/*te z które kończą się na "T" służą do chwilowego przetrzymywania wartości przedmiotów, podczas przenoszenia ich z jednej tablicy do drugiej(np. ze sklepu do plecaka)*/
+int agilityS, defenceS, damageS;
+/*Te które kończą się na S mają za zadanie przetrzymywać sume wartości statystyk, które pochodzą z całego założonego ekwipunku, żeby to łatwo dodać do statystyk postaci (np. defenceS, sumuje obronę zbroi i tarczy itd.)*/
+int tmp1;
+
+void menu_ekwipunek(int gold)
 {
+	int menu_nr = -1;
 	cout << "[1] - Przedmioty zalozone." << endl;
 	cout << "[2] - Przedmioty w plecaku." << endl;
 	cout << "[3] - Sklep." << endl;
 	cout << "[4] - Chce zdjac przedmiot." << endl;
 	cout << "[5] - Chce zalozyc przedmiot." << endl;
-	cout << "Posiadasz: " << gold << "zlota" << endl;
-
-	int menu_nr = -1;
+	cout << "Posiadasz: " << gold << "zlota" << endl<<endl;
+	cout << "Wybieram: ";
+	cin >> menu_nr;
 	Item* katalog = new Item;
 	int l = -1;
 
@@ -53,8 +65,6 @@ void menu_ekwipunek()
 		}
 		case 2:
 		{
-			//int tmp1;
-
 			cout << "Chce kupic przedmiot o nr: ";
 			cin >> tmp1;
 			katalog = wczytaj_sklep(&l);
@@ -83,13 +93,12 @@ void menu_ekwipunek()
 					cout << "Nie masz wystarczajaco pieniedzy!" << endl;
 				}
 			}
-
-
 			system("PAUSE");
 			system("cls");
 			break;
 		}
-		}
+	}
+	break;
 	}
 	case 4:
 	{
@@ -115,6 +124,7 @@ void menu_ekwipunek()
 			katalog = wczytaj_w_plecaku(&l);
 			katalog = dodaj(&l, katalog);
 		}
+		break;
 	}
 	case 5:
 	{
@@ -140,8 +150,14 @@ void menu_ekwipunek()
 			katalog = wczytaj_zalozone(&l);
 			katalog = dodaj(&l, katalog);
 		}
+	break;
 	}
+	default:
+	{
+		cout << "Podano zla cyfre!" << endl;
+		break;//continue
 	}
+}
 }
 void statystyki_przedmiotow()
 {
