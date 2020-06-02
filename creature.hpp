@@ -3,22 +3,22 @@
 
 #include <cstdlib>
 #include <string>
-#include "entity.hpp"
-#include "inventory.hpp"
+//#include "entity.hpp"
+//#include "inventory.hpp"
 
 class EntityManager;
 
 class Creature : public Entity
 {
-	public:
+public:
 	int hp;
 	int maxHp;
 	int strength;
 	int defense;
 	int agility;
 	unsigned int xp;
-	
-	Creature(std::string id, int hp, int strength,int defense, int agility,unsigned int xp);
+
+	Creature(std::string id, int hp, int strength, int defense, int agility, unsigned int xp);
 	Creature();
 	int attack(Creature* target);
 	int attack_fast(Creature* target);
