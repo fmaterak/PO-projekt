@@ -16,15 +16,6 @@ public:
 	int agility, defence, damage;
 	float price;
 };
-float gold;
-
-string nameT;
-int agilityT, defenceT, damageT;
-float priceT;
-/*te z które kończą się na "T" służą do chwilowego przetrzymywania wartości przedmiotów, podczas przenoszenia ich z jednej tablicy do drugiej(np. ze sklepu do plecaka)*/
-int agilityS, defenceS, damageS;
-/*Te które kończą się na S mają za zadanie przetrzymywać sume wartości statystyk, które pochodzą z całego założonego ekwipunku, żeby to łatwo dodać do statystyk postaci (np. defenceS, sumuje obronę zbroi i tarczy itd.)*/
-int tmp1;
 
 void menu_ekwipunek();
 /*funkcja obsługująca wszystko co związane z ekwipunkiem, sklepem, plecakiem*/
