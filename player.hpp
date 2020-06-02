@@ -4,8 +4,8 @@
 #include <unordered_set>
 
 #include "creature.hpp"
-#include "entity.hpp"
-#include "item.hpp"
+//#include "entity.hpp"
+#include "item.h"
 
 using namespace std;
 
@@ -15,15 +15,15 @@ class Armor;
 
 class Player : public Creature
 {
-	public:
+public:
 	unsigned level;
-	Player(string id, int hp, int strength,int defense, int agility, unsigned int xp, unsigned int level);
+	Player(string id, int hp, int strength, int defense, int agility, unsigned int xp, unsigned int level);
 	Player();
-	
+
 	Inventory inventory;
 	Weapon* equippedWeapon;
 	Armor* equippedArmor;
-	
+
 	//xp do lvlupa
 	unsigned int xpToLevel(unsigned int level);
 	bool levelUp();
