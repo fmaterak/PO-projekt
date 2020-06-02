@@ -23,7 +23,7 @@ int BattleEvent::run()
 		case BattleEventType::ATTACK_FAST:
 			return source->attack_fast(target);
 		case BattleEventType::ATTACK_STRONG:
-			return source->attack(target);
+			return source->attack_strong(target);
 		case BattleEventType::DEFEND:
 			return source->defend();
 		case BattleEventType::FOCUS:
