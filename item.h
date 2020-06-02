@@ -33,7 +33,7 @@ Item* wczytaj_w_plecaku(int* i);
 Item* wczytaj_sklep(int* i);
 Item* usun(int* i, Item kat[]);
 Item* zmniejsz(int* i, Item kat[]);
-Item* powieksz(int i, Item);
+Item* powieksz(int i, Item kat[]);
 Item* dodaj(int* i, Item kat[]);
 
 #endif
