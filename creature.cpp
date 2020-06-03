@@ -104,14 +104,14 @@ int Creature::attack_strong(Creature* target)
 int Creature::defend()
 {
 	int defend=0;
-	this->defense+=3;
+	this->defense+=2;
 	defend= this->defense;
 	return defend;
 }
 int Creature::focus()
 {
 	int focus=0;
-	this->agility+=3;
+	this->agility+=2;
 	focus=this->agility;
 	return focus;
 }
@@ -120,14 +120,14 @@ int Creature::focus()
 int Creature::defend_enemy(Creature* target)
 {
 	int enemy_def=0;
-	target->defense+=3;
+	target->defense+=2;
 	enemy_def=target->defense;
 	return enemy_def;
 }
 int Creature::focus_enemy(Creature* target)
 {
 	int enemy_ag=0;
-	target->agility+=3;
+	target->agility+=2;
 	enemy_ag=target->agility;
 	return enemy_ag;
 }
