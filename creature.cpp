@@ -31,7 +31,7 @@ int Creature::attack(Creature* target)
 		// critical hit
 		if(rand() % 32 == 0)
 		{
-			damage = attack * 2;
+			damage = attack - defense*0.5;
 		}
 		else
 		{
@@ -55,11 +55,11 @@ int Creature::attack_fast(Creature* target)
 	this->agility+=1;
 	if (rand() % 100 > target->agility)
 	{
-		int attack=(this->strength)/2;
+		int attack=(this->strength)*0.75;
 		int defense=target->defense;
 		if(rand() % 32 == 0)
 		{
-			damage = attack * 2;
+			damage = attack - defense*0.5;
 		}
 		else
 		{
@@ -81,12 +81,12 @@ int Creature::attack_strong(Creature* target)
 	if (rand() % 100 > target->agility)
 	{
 		//większy atak
-		int attack= (this->strength)*2;
+		int attack= (this->strength)*1.5;
 		//ignorowanie części obrony przeciwnika?
 		int defense=target->defense * 1;
 		if(rand() % 32 == 0)
 		{
-			damage = attack * 2;
+			damage = attack - 0.5*defense;
 		}
 		else
 		{
@@ -104,14 +104,14 @@ int Creature::attack_strong(Creature* target)
 int Creature::defend()
 {
 	int defend=0;
-	this->defense+=2;
+	this->defense+=3;
 	defend= this->defense;
 	return defend;
 }
 int Creature::focus()
 {
 	int focus=0;
-	this->agility+=2;
+	this->agility+=3;
 	focus=this->agility;
 	return focus;
 }
@@ -120,14 +120,14 @@ int Creature::focus()
 int Creature::defend_enemy(Creature* target)
 {
 	int enemy_def=0;
-	target->defense+=2;
+	target->defense+=3;
 	enemy_def=target->defense;
 	return enemy_def;
 }
 int Creature::focus_enemy(Creature* target)
 {
 	int enemy_ag=0;
-	target->agility+=2;
+	target->agility+=3;
 	enemy_ag=target->agility;
 	return enemy_ag;
 }
