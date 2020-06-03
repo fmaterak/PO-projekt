@@ -87,11 +87,11 @@ Player startGame()
 		{
 			 //Wojownik skupia sie na sile
 			case 1:
-				return Player("player", 15, 5, 4, 1, 0, 1, 0);
+				return Player("player", 20, 7, 4, 5, 0, 1, 0);
 
 			//Bandyta skupia sie na zrecznosci
 			case 2:
-				return Player("player", 15, 4, 5, 1, 0, 1, 0);
+				return Player("player", 20, 6, 3, 12, 0, 1, 0);
 
 			case 3:
 				return Player("player", 100, 100, 50, 1, 0, 1, 100);
